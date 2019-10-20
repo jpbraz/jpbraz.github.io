@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+
+		<title>Biblioteca JP</title>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+		<script type="text/javascript">
+			var arrayLivros = Array();
+			class Livro {
+				titulo;
+				autor;
+				paginas;
+				status;
+				constructor(titulo, autor, paginas, status){
+					this.titulo = titulo;
+					this.autor = autor;
+					this.paginas = paginas;
+					this.status = status;
+				}
+
+			}
+			function adicionar () {
+				var titulo = document.getElementById('title').value;
+				var autor = document.getElementById('author').value;
+				var paginas = document.getElementById('pages').value;
+				var status = document.getElementById('status').value;
+
+				var livro = new Livro(titulo, autor, paginas, status);
+				arrayLivros.push(livro);
+				console.table(arrayLivros);
+				clearFormulario();
+				mostrarTabela();
+			};
+			function deletar(params) {
+				
+			};
+			function procurar(){
+				var operacao = document.getElementById('author').value;
+				//
+			};
+			function mostrarTabela(){
+				arrayLivros.sort();
+				tab = "<table class='table table-striped'>";
+				tab +=	"<th class='thead-dark'>Título</th>";
+				tab +=	"<th class='thead-dark'>Autor</th>";
+				tab +=	"<th class='thead-dark'>Status</th>";
+				for (index = 0; index < arrayLivros.length; index++) {
+					tab += "<tr>";
+						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
+						tab += "<td>"+ arrayLivros[index].autor +"</td>";
+						tab += "<td>"+ arrayLivros[index].status +"</td>";
+					tab += "</tr>";
+				}
+				tab += "</table>"
+				document.getElementById('result').innerHTML = tab;
+				console.table(arrayLivros);
+			};
+			function clearFormulario(){
+				document.getElementById('title').value = null;
+				document.getElementById('author').value = null;
+				document.getElementById('pages').value = null;
+				document.getElementById('status').value = null;
+			}
+		</script>
+	</head>
+
+	<body>
+		
+		<div class="container">
+			<div class="jumbotron">
+				<h1>BIBLIOTECA</h1>
+			</div>
+
+			<hr />
+			<div class="well">
+				Título: <input id="title" type="text" class="form-control" />
+			</div>
+			<div class="well">
+				Autor: <input id="author" type="text" class="form-control" />
+			</div>
+			<div class="well">
+				Páginas: <input id="pages" type="text" class="form-control" />
+			</div>
+			
+			<div class="well">
+				Status Lido: <input id="status" type="checkbox" class="form-control" />
+			</div>
+
+			<hr />
+			<div class="row">
+				<div class="col-md-4">
+					<button type="button" class="btn btn-lg btn-primary" onclick="adicionar()">Adicionar</button>
+				</div>
+				<div class="col-md-4">
+					<button type="button" class="btn btn-lg btn-primary" onclick="procurar()">Procurar</button>
+				</div>
+				<div class="col-md-4">
+					<button type="button" class="btn btn-lg btn-primary" onclick="deletar()">Deletar</button>
+				</div>
+			</div>
+
+			<hr />
+			Livros:
+			<div class="well" id=result>
+
+			</div>
+		</div>
+	</body>
+</html>
