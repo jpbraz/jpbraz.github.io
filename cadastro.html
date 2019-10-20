@@ -1,0 +1,124 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cadastro</title>
+    <!-- bootstrap - link cdn -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+        table{
+            border-collapse: collapse;
+            size: 90%;
+            text-align: center;
+        }
+        td, th{
+            border: 1px solid gray;
+            text-align: center;
+            size: auto;
+        }
+        p.tabela-centro{
+            align-self: center;
+        }
+    </style>
+    <script type="text/javascript">
+        var pessoas = Array();
+
+        class Pessoa{
+            nome;
+            sobrenome;
+            nomeCompleto;
+            constructor(nome,sobrenome){
+                this.nome = nome;
+                this.sobrenome = sobrenome;
+                this.nomeCompleto = nome+" "+sobrenome;
+            }
+            
+        };
+
+        function inserirDados(){
+            
+            var nome = document.getElementById('nome').value;
+            console.log(nome);
+            var sobrenome = document.getElementById('sobrenome').value;
+
+            var novaPessoa = new Pessoa(nome, sobrenome);
+            pessoas.push(novaPessoa);
+            
+            document.getElementById('resultado').innerHTML = novaPessoa.nomeCompleto;
+            document.getElementById('tamanhoArray').innerHTML = pessoas.length;
+            
+            document.getElementById('nome').value = '';
+            document.getElementById('sobrenome').value = '';
+        };
+        function mostrarDados(){
+            console.table(pessoas)
+            text = "<br>";
+            for (i = 0; i < pessoas.length; i++) {
+                text += "<p>" + pessoas[i].nome + "</p>";
+            }
+            text += "</br>";
+            document.getElementById('lista').innerHTML = text; 
+        };
+
+        function mostrarTabela(){
+            pessoas.sort();
+            tab = "<table><th>Nome</th><th>Sobrenome</th>";
+            for (index = 0; index < pessoas.length; index++) {
+                tab += "<tr>";
+                    tab += "<td>"+ pessoas[index].nome +"</td>";
+                    tab += "<td>"+ pessoas[index].sobrenome +"</td>";
+                tab += "</tr>";
+            }
+            tab += "</table>"
+            document.getElementById('lista').innerHTML = tab;
+            console.table(pessoas);
+        };
+
+    </script>
+</head>
+
+<body>
+		
+    <div class="container">
+        <div class="jumbotron">
+            <h1>PESSOAS</h1>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4">
+                <input id="nome" type="text" class="form-control" placeholder="Digite o primeiro nome" />
+            </div>
+
+            <div class="col-md-4">
+                <input id="sobrenome" type="text" class="form-control" placeholder="Digite o ultimo nome"/>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4"></div>
+
+            <div class="col-md-4">
+                <button type="button" class="btn btn-lg btn-primary pull-right" onclick="inserirDados()">Inserir</button>
+                <button type="button" class="btn btn-lg btn-primary pull-right" onclick="mostrarDados()">Mostrar</button>
+                <button type="button" class="btn btn-lg btn-primary pull-right" onclick="mostrarTabela()">Tabela</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="well">
+            Cadastros: <p id="resultado" type="text" class="form-control" readonly></p>
+            
+            <p>Tamanho do Array:  <span id="tamanhoArray"></span> </p>
+            <p id="lista" class="tabela-center"></p>
+        </div>
+    </div>
+</body>
+</html>
