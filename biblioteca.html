@@ -9,17 +9,20 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
 		<script type="text/javascript">
+			
 			var arrayLivros = Array();
 			class Livro {
 				titulo;
 				autor;
 				paginas;
 				status;
+				stringBtnLer
 				constructor(titulo, autor, paginas, status){
 					this.titulo = titulo;
 					this.autor = autor;
 					this.paginas = paginas;
 					this.status = status;
+					this.stringBtnLer = "Ler";
 				}
 
 			}
@@ -27,44 +30,63 @@
 				var titulo = document.getElementById('title').value;
 				var autor = document.getElementById('author').value;
 				var paginas = document.getElementById('pages').value;
-				var status = document.getElementById('status').value;
+				//var status = document.getElementById('status').value;
 
-				var livro = new Livro(titulo, autor, paginas, status);
+				var livro = new Livro(titulo, autor, paginas, 0);
 				arrayLivros.push(livro);
 				console.table(arrayLivros);
 				clearFormulario();
 				mostrarTabela();
 			};
-			function deletar(params) {
-				
+			function deletar(index) {
+				arrayLivros.splice(index, 1);
+				mostrarTabela();
 			};
 			function procurar(){
 				var operacao = document.getElementById('author').value;
 				//
 			};
+			function mudarStatus(index) {
+				if (arrayLivros[index].status == 1) {
+					arrayLivros[index].status = 0;
+					arrayLivros[index].stringBtnLer = " Ler ";
+				} else {
+					arrayLivros[index].status = 1;
+					arrayLivros[index].stringBtnLer = " LIDO ";	
+				}
+				mostrarTabela();
+			}
 			function mostrarTabela(){
 				arrayLivros.sort();
 				tab = "<table class='table table-striped'>";
 				tab +=	"<th class='thead-dark'>Título</th>";
 				tab +=	"<th class='thead-dark'>Autor</th>";
+				tab +=	"<th class='thead-dark'>Páginas</th>";
 				tab +=	"<th class='thead-dark'>Status</th>";
+				tab +=	"<th class='thead-dark'>Delete</th>";
 				for (index = 0; index < arrayLivros.length; index++) {
 					tab += "<tr>";
 						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
 						tab += "<td>"+ arrayLivros[index].autor +"</td>";
-						tab += "<td>"+ arrayLivros[index].status +"</td>";
+						tab += "<td>"+ arrayLivros[index].paginas +"</td>";
+						tab += "<td><button class='btn-info' id='btn-ler"+ 
+							index +"' onclick='mudarStatus("+index+")'>"+
+							arrayLivros[index].stringBtnLer+"</button></td>";
+						tab += "<td><button class='btn-danger' id='btn-delete"+
+							index +"' onclick='deletar("+index+")'>Deletar</button></td>";
 					tab += "</tr>";
 				}
 				tab += "</table>"
-				document.getElementById('result').innerHTML = tab;
+				document.getElementById('livros').innerHTML = tab;
 				console.table(arrayLivros);
 			};
 			function clearFormulario(){
 				document.getElementById('title').value = null;
 				document.getElementById('author').value = null;
 				document.getElementById('pages').value = null;
-				document.getElementById('status').value = null;
-			}
+				//document.getElementById('status').value = null;
+			};
+			
 		</script>
 	</head>
 
@@ -73,6 +95,11 @@
 		<div class="container">
 			<div class="jumbotron">
 				<h1>BIBLIOTECA</h1>
+			</div>
+
+			<hr />
+			Livros:
+			<div class="well" id=livros>
 			</div>
 
 			<hr />
@@ -85,11 +112,11 @@
 			<div class="well">
 				Páginas: <input id="pages" type="text" class="form-control" />
 			</div>
-			
+		<!--	
 			<div class="well">
 				Status Lido: <input id="status" type="checkbox" class="form-control" />
 			</div>
-
+		-->
 			<hr />
 			<div class="row">
 				<div class="col-md-4">
@@ -104,8 +131,8 @@
 			</div>
 
 			<hr />
-			Livros:
-			<div class="well" id=result>
+			Livros Encontrados:
+			<div class="well" id="result">
 
 			</div>
 		</div>
