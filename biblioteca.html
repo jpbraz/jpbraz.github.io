@@ -1,0 +1,211 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+	<head>
+		<meta charset="UTF-8">
+
+		<title>Biblioteca JP</title>
+
+		<!-- bootstrap - link cdn -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+		<script type="text/javascript">
+			
+			var arrayLivros = Array();
+
+			class Livro {
+				titulo;
+				autor;
+				paginas;
+				situacao;
+				stringBtnLer
+				constructor(titulo, autor, paginas, situacao){
+					this.titulo = titulo;
+					this.autor = autor;
+					this.paginas = paginas;
+					this.situacao = situacao;
+					if (situacao == 0) {
+						this.stringBtnLer = "Ler";
+					} else {
+						this.stringBtnLer = "Lido";
+					}	
+				}
+			}
+
+			function adicionar () {
+				var titulo = document.getElementById('title').value;
+				var autor = document.getElementById('author').value;
+				var paginas = document.getElementById('pages').value;
+				var situacao = document.querySelector('input[name="status"]:checked').value;
+				
+				var livro = new Livro(titulo, autor, paginas, situacao);
+				arrayLivros.push(livro);
+				clearFormulario();
+				mostrarTabela();
+			};
+
+			function deletar(index) {
+				arrayLivros.splice(index, 1);
+				mostrarTabela();
+			};
+
+			function procurar(){
+				var titulo = document.getElementById('title').value;
+				var autor = document.getElementById('author').value;
+
+				if (titulo != "") {
+					console.info(titulo);
+					for (var i = 0; i < arrayLivros.length; i++) {
+						const element = arrayLivros[i].titulo;
+						if (element == titulo) {
+							var index = i;
+							imprimirElemento(i);
+							mostrarTabela();
+						}				
+					}
+					console.info(index);
+				} else if (autor != "") {
+					console.info(autor);
+					for (var i = 0; i < arrayLivros.length; i++) {
+						const element = arrayLivros[i].autor;
+						if (element == autor) {
+							var index = i;
+							imprimirElemento(i);
+							mostrarTabela();
+						}				
+					}
+					console.info(index);
+				} else {
+					console.info("preencha uma opcao valida");
+				}
+			};
+			function imprimirElemento(index) {
+
+				tab = "<table class='table table-striped'>";
+				tab +=	"<th class='thead-dark'>Título</th>";
+				tab +=	"<th class='thead-dark'>Autor</th>";
+				tab +=	"<th class='thead-dark'>Páginas</th>";
+
+					tab += "<tr>";
+						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
+						tab += "<td>"+ arrayLivros[index].autor +"</td>";
+						tab += "<td>"+ arrayLivros[index].paginas +"</td>";
+	
+					tab += "</tr>";
+
+				tab += "</table>"
+				document.getElementById('resultadoPesquisa').innerHTML = tab;
+				console.table(arrayLivros);
+			};
+			function mudarStatus(index) {
+				if (arrayLivros[index].status == 1) {
+					arrayLivros[index].status = 0;
+					arrayLivros[index].stringBtnLer = " Ler ";
+				} else {
+					arrayLivros[index].status = 1;
+					arrayLivros[index].stringBtnLer = " LIDO ";	
+				}
+				mostrarTabela();
+			};
+			function mostrarTabela(){
+				arrayLivros.sort();
+				tab = "<table class='table table-striped'>";
+				tab +=	"<th class='thead-dark'>Título</th>";
+				tab +=	"<th class='thead-dark'>Autor</th>";
+				tab +=	"<th class='thead-dark'>Páginas</th>";
+				tab +=	"<th class='thead-dark'>Status</th>";
+				tab +=	"<th class='thead-dark'>Delete</th>";
+				for (index = 0; index < arrayLivros.length; index++) {
+					tab += "<tr>";
+						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
+						tab += "<td>"+ arrayLivros[index].autor +"</td>";
+						tab += "<td>"+ arrayLivros[index].paginas +"</td>";
+						tab += "<td><button class='btn-info' id='btn-ler"+ 
+							index +"' onclick='mudarStatus("+index+")'>"+
+							arrayLivros[index].stringBtnLer+"</button></td>";
+						tab += "<td><button class='btn-danger' id='btn-delete"+
+							index +"' onclick='deletar("+index+")'>Deletar</button></td>";
+					tab += "</tr>";
+				}
+				tab += "</table>"
+				document.getElementById('livros').innerHTML = tab;
+				console.table(arrayLivros);
+			};
+			function clearFormulario(){
+				document.getElementById('title').value = null;
+				document.getElementById('author').value = null;
+				document.getElementById('pages').value = null;
+				document.getElementsByName('status').value = null;
+			};
+			
+		</script>
+	</head>
+
+	<body>
+		
+		<div class="container">
+			<div class="panel panel-secundary">
+				<h1>BIBLIOTECA</h1>
+			</div>
+			<form class="form-horizontal">
+				<fieldset>
+					<div class="row">
+						<div></div>
+						<div class="col-md-2 btn-group-vertical">
+							<button type="button" class="btn btn-lg btn-primary" onclick="adicionar()">Adicionar</button>
+							<button type="button" class="btn btn-lg btn-primary" onclick="procurar()">Procurar</button>
+							<!--
+								<button type="button" class="btn btn-lg btn-primary" onclick="deletar()">Deletar</button>
+							-->
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<label class="col-md-1 control-label" for="Nome">Título: </label>  
+								<div class="col-md-11">
+									<input id="title" name="title" placeholder="" class="form-control input-md" required="" type="text">
+								</div>
+							</div>
+							
+							<div class="form-group">
+								<label class="col-md-1 control-label" for="Nome">Autor: </label>  
+								<div class="col-md-4">
+									<input id="author" name="author" placeholder="" class="form-control input-md" required="" type="text" maxlength="11" pattern="[0-9]+$">
+								</div>
+
+								</hr>
+								<label class="col-md-1 control-label" for="Nome">Páginas: </label>  
+								<div class="col-md-2">
+									<input id="pages" name="pages" placeholder="" class="form-control input-md" required="" type="text" maxlength="4" pattern="[0-9]+$">
+								</div>
+								<label class="col-md-1 control-label" for="radios">Status: </label>
+								<div class="col-md-3"> 
+									<label required="" id class="radio-inline" for="radios-0" >
+										<input name="status" id="status" value="0" type="radio" required checked> Não Lido
+									</label> 
+									<label class="radio-inline" for="radios-1">
+										<input name="status" id="status" value="1" type="radio"> Lido
+									</label>
+								</div>
+								</hr>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			<hr />
+
+			<div class="row">
+				<h4>Livros Encontrados:</h4>
+				<div class="well" id="resultadoPesquisa" >
+				</div>
+			</div>
+			<hr />
+
+			<div class="row">
+				<h4>Livros Cadastrados:</h4>
+				<div class="well" id=livros>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</html>
