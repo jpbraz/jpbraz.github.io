@@ -114,7 +114,7 @@
 				mostrarTabela();
 			};
 			function mostrarTabela(){
-				arrayLivros.sort();
+				ordenar();
 				tab = "<table class='table table-striped'>";
 				tab +=	"<th class='thead-dark'>Título</th>";
 				tab +=	"<th class='thead-dark'>Autor</th>";
@@ -138,6 +138,19 @@
 				document.getElementById('livros').innerHTML = tab;
 				console.table(arrayLivros);
 			};
+
+			function ordenar(){
+				arrayLivros.sort(function (a, b) {
+					if (a.titulo > b.titulo) {
+						return 1;
+					}
+					if (a.titulo < b.titulo) {
+						return -1;
+					}
+					return 0;
+				});
+			};
+
 			function clearFormulario(){
 				document.getElementById('title').value = null;
 				document.getElementById('author').value = null;
