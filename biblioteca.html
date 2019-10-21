@@ -17,7 +17,8 @@
 				autor;
 				paginas;
 				situacao;
-				stringBtnLer
+				stringBtnLer;
+				classBtnLer = "btn-info";
 				constructor(titulo, autor, paginas, situacao){
 					this.titulo = titulo;
 					this.autor = autor;
@@ -51,6 +52,11 @@
 			function procurar(){
 				var titulo = document.getElementById('title').value;
 				var autor = document.getElementById('author').value;
+				
+				var tab = "<table class='table table-striped'>";
+				tab +=	"<th class='thead-dark'>Título</th>";
+				tab +=	"<th class='thead-dark'>Autor</th>";
+				tab +=	"<th class='thead-dark'>Páginas</th>";
 
 				if (titulo != "") {
 					console.info(titulo);
@@ -58,8 +64,8 @@
 						const element = arrayLivros[i].titulo;
 						if (element == titulo) {
 							var index = i;
-							imprimirElemento(i);
-							mostrarTabela();
+							
+							tab += imprimirElemento(i);
 						}				
 					}
 					console.info(index);
@@ -69,22 +75,20 @@
 						const element = arrayLivros[i].autor;
 						if (element == autor) {
 							var index = i;
-							imprimirElemento(i);
-							mostrarTabela();
+							tab += imprimirElemento(i);
 						}				
 					}
 					console.info(index);
 				} else {
 					console.info("preencha uma opcao valida");
 				}
+				tab += "</table>";
+				document.getElementById('resultadoPesquisa').innerHTML = tab;
+				
+				mostrarTabela();
 			};
 			function imprimirElemento(index) {
-
-				tab = "<table class='table table-striped'>";
-				tab +=	"<th class='thead-dark'>Título</th>";
-				tab +=	"<th class='thead-dark'>Autor</th>";
-				tab +=	"<th class='thead-dark'>Páginas</th>";
-
+					var tab = " ";
 					tab += "<tr>";
 						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
 						tab += "<td>"+ arrayLivros[index].autor +"</td>";
@@ -92,17 +96,18 @@
 	
 					tab += "</tr>";
 
-				tab += "</table>"
-				document.getElementById('resultadoPesquisa').innerHTML = tab;
 				console.table(arrayLivros);
+				return tab;
 			};
 			function mudarStatus(index) {
 				if (arrayLivros[index].status == 1) {
 					arrayLivros[index].status = 0;
 					arrayLivros[index].stringBtnLer = " Ler ";
+					arrayLivros[index].classBtnLer = "btn-info";
 				} else {
 					arrayLivros[index].status = 1;
 					arrayLivros[index].stringBtnLer = " LIDO ";	
+					arrayLivros[index].classBtnLer = "btn-success";
 				}
 				mostrarTabela();
 			};
@@ -119,10 +124,11 @@
 						tab += "<td>"+ arrayLivros[index].titulo +"</td>";
 						tab += "<td>"+ arrayLivros[index].autor +"</td>";
 						tab += "<td>"+ arrayLivros[index].paginas +"</td>";
-						tab += "<td><button class='btn-info' id='btn-ler"+ 
+						tab += "<td><button class='btn "+
+							arrayLivros[index].classBtnLer+"' id='btn-ler"+ 
 							index +"' onclick='mudarStatus("+index+")'>"+
 							arrayLivros[index].stringBtnLer+"</button></td>";
-						tab += "<td><button class='btn-danger' id='btn-delete"+
+						tab += "<td><button class='btn btn-danger' id='btn-delete"+
 							index +"' onclick='deletar("+index+")'>Deletar</button></td>";
 					tab += "</tr>";
 				}
